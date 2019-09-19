@@ -26,7 +26,7 @@
       var invalid = function(k, ok) {
         return !(s[k] === undefined || s[k] === ok);
       };
-      
+
       if (s.opacity < 1 ||
           invalid('zIndex', 'auto') ||
           invalid('transform', 'none') ||
@@ -168,7 +168,7 @@
      * longer open or is no longer part of the DOM.
      */
     maybeHideModal: function() {
-      if (this.dialog_.hasAttribute('open') && document.body.contains(this.dialog_)) { return; }
+      if (this.dialog_.hasAttribute('open')) { return; }
       this.downgradeModal();
     },
 
@@ -289,9 +289,6 @@
       if (this.dialog_.hasAttribute('open')) {
         throw new Error('Failed to execute \'showModal\' on dialog: The element is already open, and therefore cannot be opened modally.');
       }
-      if (!document.body.contains(this.dialog_)) {
-        throw new Error('Failed to execute \'showModal\' on dialog: The element is not in a Document.');
-      }
       if (!dialogPolyfill.dm.pushDialog(this)) {
         throw new Error('Failed to execute \'showModal\' on dialog: There are too many open modal dialogs.');
       }
@@ -342,15 +339,13 @@
         bubbles: false,
         cancelable: false
       });
-    
+
       // If we have an onclose handler assigned and it's a function, call it
       if(this.dialog_.onclose instanceof Function) {
         this.dialog_.onclose(closeEvent);
       }
 
-      // Dispatch the event as normal
       this.dialog_.dispatchEvent(closeEvent);
-
     }
 
   };
